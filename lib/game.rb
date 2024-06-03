@@ -1,8 +1,10 @@
 class Game
-  attr_accessor :word
+  attr_accessor :word, :guesses, :turns_remaining
 
   def initialize
     self.word = choose_word
+    self.guesses = Array.new(word.length, '_')
+    self.turns_remaining = 6
   end
 
   private
@@ -16,4 +18,5 @@ end
 
 game = Game.new
 
-puts game.word
+# puts game.word
+# puts game.guesses.join(' ')
