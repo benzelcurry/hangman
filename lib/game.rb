@@ -9,27 +9,18 @@ class Game
   end
 
   # Runs the game until player wins or loses
-  # def game_loop
-  #   while turns_remaining.positive? && guesses.include?('_')
-  #     puts 'Please enter your guess'
-  #     user_input = gets.chomp
+  def game_loop
+    while turns_remaining.positive? && guesses.include?('_')
+      puts 'Welcome to Hangman!' if turns_remaining == 6
+      puts 'Please enter your guess'
+      user_input = gets.chomp
+      correct_guesses = check_guess(user_input)
 
-  #     # `hits` refers to the indexes of correct guesses
-  #     hits = check_guess(user_input)
+      update_game(correct_guesses)
 
-  #     if hits.length.positive?
-  #       hits.each do |i|
-  #         guesses[i] = user_input
-  #       end
-  #       puts 'Success!'
-  #     else
-  #       turns_remaining -= 1
-  #       puts "You have #{turns_remaining} turns left."
-  #     end
-
-  #     puts guesses.join(' ')
-  #   end
-  # end
+      puts guesses.join(' ')
+    end
+  end
 
   private
 
@@ -48,11 +39,22 @@ class Game
     end
     indexes
   end
+
+  # Informs user and updates game state if guess is correct/wrong
+  def update_game(correct_guesses)
+    if correct_guesses.length.positive?
+      correct_guesses.each do |i|
+        guesses[i] = user_input
+      end
+      puts 'Success!'
+    else
+      self.turns_remaining -= 1
+      puts "You have #{turns_remaining} turns left."
+    end
+  end
 end
 
+# TODO: Put the below logic into a main.rb file
 game = Game.new
 
-# puts game.word
-# puts game.guesses.join(' ')
-# puts game.accept_guess('p')
 game.game_loop
