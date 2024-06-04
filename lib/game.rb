@@ -1,9 +1,7 @@
 class Game
   attr_accessor :word, :guesses, :turns_remaining
 
-  # TODO: Put the below logic into a main.rb file
   # TODO: Add an array for checking if user has already tried out a letter
-  # TODO: Get rid of test word
 
   def initialize
     self.word = choose_word
@@ -23,6 +21,8 @@ class Game
       puts guesses.join(' ')
       puts "\n"
     end
+
+    inform_win_status
   end
 
   private
@@ -53,6 +53,15 @@ class Game
     else
       self.turns_remaining -= 1
       puts "You have #{turns_remaining} turns left."
+    end
+  end
+
+  # Determines what message to show user if game was won/loss
+  def inform_win_status
+    if guesses.include?('_')
+      puts "You lose :( The word was '#{word}'"
+    else
+      puts 'Congratulations! You win.'
     end
   end
 end
