@@ -1,9 +1,12 @@
 class Game
   attr_accessor :word, :guesses, :turns_remaining
 
+  # TODO: Put the below logic into a main.rb file
+  # TODO: Add an array for checking if user has already tried out a letter
+  # TODO: Get rid of test word
+
   def initialize
-    # self.word = choose_word
-    self.word = 'test'
+    self.word = choose_word
     self.guesses = Array.new(word.length, '_')
     self.turns_remaining = 6
   end
@@ -53,9 +56,3 @@ class Game
     end
   end
 end
-
-# TODO: Put the below logic into a main.rb file
-game = Game.new
-
-puts 'Welcome to Hangman!'
-game.game_loop
