@@ -11,14 +11,14 @@ class Game
   # Runs the game until player wins or loses
   def game_loop
     while turns_remaining.positive? && guesses.include?('_')
-      puts 'Welcome to Hangman!' if turns_remaining == 6
       puts 'Please enter your guess'
       user_input = gets.chomp
       correct_guesses = check_guess(user_input)
 
-      update_game(correct_guesses)
+      update_game(correct_guesses, user_input)
 
       puts guesses.join(' ')
+      puts "\n"
     end
   end
 
@@ -41,7 +41,7 @@ class Game
   end
 
   # Informs user and updates game state if guess is correct/wrong
-  def update_game(correct_guesses)
+  def update_game(correct_guesses, user_input)
     if correct_guesses.length.positive?
       correct_guesses.each do |i|
         guesses[i] = user_input
@@ -57,4 +57,5 @@ end
 # TODO: Put the below logic into a main.rb file
 game = Game.new
 
+puts 'Welcome to Hangman!'
 game.game_loop
