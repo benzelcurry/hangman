@@ -1,7 +1,6 @@
+# Houses the game's logic
 class Game
   attr_accessor :word, :guesses, :remaining_letters, :turns_remaining
-
-  # TODO: Add an array for checking if user has already tried out a letter
 
   def initialize
     self.word = choose_word
@@ -13,13 +12,7 @@ class Game
   # Runs the game until player wins or loses
   def game_loop
     while turns_remaining.positive? && remaining_letters.include?('_')
-      user_input = ''
-      until user_input.length.positive? && valid_input?(user_input)
-        puts 'Please enter your guess.'
-        user_input = gets.chomp.downcase
-      end
-      guesses.push(user_input)
-
+      user_input = retrieve_input
       correct_guesses = check_guess(user_input)
 
       update_game(correct_guesses, user_input)
@@ -69,6 +62,17 @@ class Game
     else
       puts 'Congratulations! You win.'
     end
+  end
+
+  # Gets input from user
+  def retrieve_input
+    user_input = ''
+    until user_input.length.positive? && valid_input?(user_input)
+      puts 'Please enter your guess.'
+      user_input = gets.chomp.downcase
+    end
+    guesses.push(user_input)
+    user_input
   end
 
   # Validates user input
