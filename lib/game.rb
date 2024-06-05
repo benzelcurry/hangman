@@ -1,24 +1,30 @@
 class Game
-  attr_accessor :word, :guesses, :turns_remaining
+  attr_accessor :word, :guesses, :remaining_letters, :turns_remaining
 
   # TODO: Add an array for checking if user has already tried out a letter
 
   def initialize
     self.word = choose_word
-    self.guesses = Array.new(word.length, '_')
+    self.remaining_letters = Array.new(word.length, '_')
     self.turns_remaining = 6
+    self.guesses = []
   end
 
   # Runs the game until player wins or loses
   def game_loop
-    while turns_remaining.positive? && guesses.include?('_')
-      puts 'Please enter your guess'
-      user_input = gets.chomp
+    while turns_remaining.positive? && remaining_letters.include?('_')
+      user_input = ''
+      until user_input.length.positive? && valid_input?(user_input)
+        puts 'Please enter your guess.'
+        user_input = gets.chomp.downcase
+      end
+      guesses.push(user_input)
+
       correct_guesses = check_guess(user_input)
 
       update_game(correct_guesses, user_input)
 
-      puts guesses.join(' ')
+      puts remaining_letters.join(' ')
       puts "\n"
     end
 
@@ -47,7 +53,7 @@ class Game
   def update_game(correct_guesses, user_input)
     if correct_guesses.length.positive?
       correct_guesses.each do |i|
-        guesses[i] = user_input
+        remaining_letters[i] = user_input
       end
       puts 'Success!'
     else
@@ -58,10 +64,28 @@ class Game
 
   # Determines what message to show user if game was won/loss
   def inform_win_status
-    if guesses.include?('_')
+    if remaining_letters.include?('_')
       puts "You lose :( The word was '#{word}'"
     else
       puts 'Congratulations! You win.'
+    end
+  end
+
+  # Validates user input
+  def valid_input?(input)
+    if input.length != 1
+      puts 'Input may only be one character'
+      false
+    # Regex for checking if input is a single letter
+    elsif !/\A[a-zA-Z]\z/.match?(input)
+      puts 'Input must be a letter'
+      false
+    elsif guesses.include?(input)
+      puts "You have already guessed '#{input}'."
+      puts "Current guesses: #{guesses}"
+      false
+    else
+      true
     end
   end
 end
